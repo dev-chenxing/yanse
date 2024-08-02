@@ -1,2 +1,3 @@
-# yanse
-Get information about colors and convert them in the command line
+# 顔色 yanse
+
+Convert colors in colorful command line
