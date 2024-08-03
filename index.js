@@ -3,25 +3,40 @@
 import chalk from "chalk";
 import { program } from "commander";
 import Table from "cli-table3";
-import { colord, getFormat } from "colord";
+import { colord } from "colord";
 
 program
     .option("--hex <hex>")
     .option("--rgb <rgb>")
     .option("--hsl <hsl>")
-    .action(() => {
+    .action((options) => {
         // get color value
-        let { hex, rgb, hsl } = program.opts();
+        let { hex, rgb, hsl } = options;
+        if (![hex, rgb, hsl].some((option) => option)) {
+            program.error(`${chalk.red("x")} error: require at least one option: --hex --rgb --hsl`);
+        }
         if (hex) {
             if (hex[1] != "#") hex = `#${hex}`;
+            if (!colord(hex).isValid()) {
+                program.error(`${chalk.red("x")} error: Hex ${hex} is not valid`);
+            }
             rgb = colord(hex).toRgbString();
             hsl = colord(hex).toHslString();
         } else if (rgb) {
-            hex = colord(`rgb(${rgb})`).toHex();
+            const [r, g, b] = rgb.split(" ");
+            rgb = `rgb(${r}, ${g}, ${b})`;
+            if (!colord(rgb).isValid()) {
+                program.error(`${chalk.red("x")} error: Rgb ${rgb} is not valid`);
+            }
+            hex = colord(rgb).toHex();
             hsl = colord(hex).toHslString();
         } else if (hsl) {
-            const [h, s, l] = hsl.split(",");
-            hex = colord(`hsl(${h}deg,${s}%,${l}%)`).toHex();
+            const [h, s, l] = hsl.split(" ");
+            hsl = `hsl(${h}deg, ${s}%, ${l}%)`;
+            if (!colord(hsl).isValid()) {
+                program.error(`${chalk.red("x")} error: ${hsl} is not valid`);
+            }
+            hex = colord(hsl).toHex();
             rgb = colord(hex).toRgbString();
         }
 
