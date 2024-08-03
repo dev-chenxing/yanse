@@ -1,6 +1,6 @@
 {
     "name": "yanse",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Convert colors in colorful command line",
     "main": "index.js",
     "bin": {
@@ -20,7 +20,7 @@
         "rgb",
         "hex"
     ],
-    "author": "dev-chenxing",
+    "author": "dev-chenxing <chenxing.io@outlook.com>",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/dev-chenxing/yanse/issues"
